@@ -1,0 +1,8 @@
+.element__horizontal-alignment {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 21px;
+  margin-right: 21px;
+}
