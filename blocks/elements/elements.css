@@ -2,7 +2,7 @@
   max-width: 882px;
   min-height: 744px;
   margin: auto;
-  padding-bottom: 66px;
+  padding: 0 0 66px 0;
   display: grid;
   grid-template-columns: 282px 282px 282px;
   grid-template-rows: auto;

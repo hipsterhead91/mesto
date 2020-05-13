@@ -32,16 +32,6 @@
       <button class="profile__add-button" type="button"></button>
     </section>
 
-    <div class="popup">
-      <form class="popup__container">
-        <button class="popup__close-button" type="button"></button>
-        <p class="popup__title">Редактировать профиль</p>
-        <input class="popup__name-input" type="text">
-        <input class="popup__job-input" type="text">
-        <button class="popup__submit-button" type="submit">Сохранить</button>
-      </form>
-    </div>
-
     <!--Секция ELEMENTS-->
     <section class="elements">
       <div class="element">
@@ -94,6 +84,17 @@
   <footer class="footer">
     <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
   </footer>
+
+  <!--ПОПАП-->
+  <div class="popup">
+    <form class="popup__container">
+      <button class="popup__close-button" type="button"></button>
+      <p class="popup__title">Редактировать профиль</p>
+      <input id="name-input" class="popup__input" type="text">
+      <input id="job-input" class="popup__input" type="text">
+      <button class="popup__submit-button" type="submit">Сохранить</button>
+    </form>
+  </div>
 
   <script src="script.js"></script>
 

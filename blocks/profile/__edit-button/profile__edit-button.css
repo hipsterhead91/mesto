@@ -2,13 +2,13 @@
   width: 24px;
   height: 24px;
   border: 1px solid #ffffff;
+  outline: none;
   box-sizing: border-box;
   background-color: transparent;
   background-image: url(../../../images/pencil.svg);
   background-repeat: no-repeat;
   background-position: center;
   cursor: pointer;
-  outline: none;
 }
 
 @media screen and (max-width: 320px) {
@@ -21,12 +21,4 @@
 .profile__edit-button:hover {
   opacity: 0.6;
   transition: 0.15s linear;
-}
-
-.profile__edit-button:active:focus {
-  box-shadow: none;
-  outline: none;
-  outline-width: 0px;
-  outline-style: none;
-  outline-color: transparent;
 }
