@@ -33,50 +33,7 @@
     </section>
 
     <!--Секция ELEMENTS-->
-    <section class="elements">
-      <div class="element">
-        <img class="element__image" src="./images/moscow.jpg" alt="Пользовательское изображение.">
-        <div class="element__horizontal-alignment">
-          <h2 class="element__title">Москва-Сити</h2>
-          <button class="element__like-button" type="button"></button>
-        </div>
-      </div>
-      <div class="element">
-        <img class="element__image" src="./images/kazan.jpg" alt="Пользовательское изображение.">
-        <div class="element__horizontal-alignment">
-          <h2 class="element__title">Казань, Кул-Шариф</h2>
-          <button class="element__like-button" type="button"></button>
-        </div>
-      </div>
-      <div class="element">
-        <img class="element__image" src="./images/cherepovets.jpg" alt="Пользовательское изображение.">
-        <div class="element__horizontal-alignment">
-          <h2 class="element__title">Череповец</h2>
-          <button class="element__like-button" type="button"></button>
-        </div>
-      </div>
-      <div class="element">
-        <img class="element__image" src="./images/kazan.jpg" alt="Пользовательское изображение.">
-        <div class="element__horizontal-alignment">
-          <h2 class="element__title">Казань, Кул-Шариф</h2>
-          <button class="element__like-button" type="button"></button>
-        </div>
-      </div>
-      <div class="element">
-        <img class="element__image" src="./images/cherepovets.jpg" alt="Пользовательское изображение.">
-        <div class="element__horizontal-alignment">
-          <h2 class="element__title">Череповец</h2>
-          <button class="element__like-button" type="button"></button>
-        </div>
-      </div>
-      <div class="element">
-        <img class="element__image" src="./images/moscow.jpg" alt="Пользовательское изображение.">
-        <div class="element__horizontal-alignment">
-          <h2 class="element__title">Москва-Сити</h2>
-          <button class="element__like-button" type="button"></button>
-        </div>
-      </div>
-    </section>
+    <section class="elements"></section>
 
   </main>
 
@@ -85,16 +42,49 @@
     <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
   </footer>
 
-  <!--ПОПАП-->
-  <div class="popup">
-    <form class="popup__container">
-      <button class="popup__close-button" type="button"></button>
+  <!--ПОПАП РЕДАКТИРОВАНИЯ ПРОФИЛЯ-->
+  <div id="profile-popup" class="popup">
+    <form class="popup__container" type="submit">
+      <button id="profile-close-button" class="popup__close-button" type="button"></button>
       <p class="popup__title">Редактировать профиль</p>
       <input id="name-input" class="popup__input" type="text">
       <input id="job-input" class="popup__input" type="text">
-      <button class="popup__submit-button" type="submit">Сохранить</button>
+      <button id="profile-submit-button" class="popup__submit-button" type="submit">Сохранить</button>
     </form>
   </div>
+
+  <!--ПОПАП ДОБАВЛЕНИЯ КАРТОЧЕК-->
+  <div id="new-card-popup" class="popup">
+    <form class="popup__container">
+      <button id="new-card-close-button" class="popup__close-button" type="button"></button>
+      <p class="popup__title">Новое место</p>
+      <input id="title-input" class="popup__input" type="text" placeholder="Название">
+      <input id="link-input" class="popup__input" type="text" placeholder="Ссылка на картинку">
+      <button id="new-card-submit-button" class="popup__submit-button" type="submit">Сохранить</button>
+    </form>
+  </div>
+
+  <!--ПОПАП ОТКРЫТОЙ КАРТИНКИ-->
+
+  <div id="image-popup" class="popup">
+    <div class="popup__image-container">
+      <button id="image-close-button" class="popup__close-button" type="button"></button>
+      <img class="popup__image" alt="Пользовательское изображение.">
+      <p class="popup__image-title"></p>
+    </div>
+  </div>
+
+  <!--ШАБЛОН КАРТОЧКИ-->
+  <template id="card-template">
+    <div class="element">
+      <button class="element__delete-button" type="button"></button>
+      <img class="element__image" alt="Пользовательское изображение.">
+      <div class="element__horizontal-alignment">
+        <h2 class="element__title"></h2>
+        <button class="element__like-button" type="button"></button>
+      </div>
+    </div>  
+  </template>
 
   <script src="script.js"></script>
 
