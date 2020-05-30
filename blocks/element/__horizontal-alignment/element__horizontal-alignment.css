@@ -1,4 +1,5 @@
 .element__horizontal-alignment {
+  height: 79px;
   margin: 0 21px 0 21px;
   display: flex;
   flex-direction: row;

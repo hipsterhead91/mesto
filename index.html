@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="pages/style.css">
   <title>Mesto Russia</title>
 </head>
 
@@ -43,39 +43,39 @@
   </footer>
 
   <!--ПОПАП РЕДАКТИРОВАНИЯ ПРОФИЛЯ-->
-  <div id="profile-popup" class="popup">
-    <form class="popup__container" type="submit">
-      <button id="profile-close-button" class="popup__close-button" type="button"></button>
+  <div class="popup profile-popup">
+    <form class="popup__container" type="submit" name="edit-profile">
+      <button class="popup__close-button profile-close-button" type="button"></button>
       <p class="popup__title">Редактировать профиль</p>
-      <input id="name-input" class="popup__input" type="text">
-      <input id="job-input" class="popup__input" type="text">
-      <button id="profile-submit-button" class="popup__submit-button" type="submit">Сохранить</button>
+      <input class="popup__input name-input" type="text" name="name-input">
+      <input class="popup__input job-input" type="text" name="job-input">
+      <button class="popup__submit-button profile-submit-button" type="submit">Сохранить</button>
     </form>
   </div>
 
   <!--ПОПАП ДОБАВЛЕНИЯ КАРТОЧЕК-->
-  <div id="new-card-popup" class="popup">
-    <form class="popup__container">
-      <button id="new-card-close-button" class="popup__close-button" type="button"></button>
+  <div class="popup new-card-popup">
+    <form class="popup__container" type="submit" name="new-card-popup">
+      <button class="popup__close-button new-card-close-button" type="button"></button>
       <p class="popup__title">Новое место</p>
-      <input id="title-input" class="popup__input" type="text" placeholder="Название">
-      <input id="link-input" class="popup__input" type="text" placeholder="Ссылка на картинку">
-      <button id="new-card-submit-button" class="popup__submit-button" type="submit">Сохранить</button>
+      <input class="popup__input title-input" type="text" placeholder="Название" name="title-input">
+      <input class="popup__input link-input" type="text" placeholder="Ссылка на картинку" name="link-input">
+      <button class="popup__submit-button new-card-submit-button" type="submit">Сохранить</button>
     </form>
   </div>
 
   <!--ПОПАП ОТКРЫТОЙ КАРТИНКИ-->
 
-  <div id="image-popup" class="popup">
+  <div class="popup image-popup">
     <div class="popup__image-container">
-      <button id="image-close-button" class="popup__close-button" type="button"></button>
+      <button class="popup__close-button image-close-button" type="button"></button>
       <img class="popup__image" alt="Пользовательское изображение.">
       <p class="popup__image-title"></p>
     </div>
   </div>
 
   <!--ШАБЛОН КАРТОЧКИ-->
-  <template id="card-template">
+  <template class="card-template">
     <div class="element">
       <button class="element__delete-button" type="button"></button>
       <img class="element__image" alt="Пользовательское изображение.">
@@ -86,7 +86,7 @@
     </div>  
   </template>
 
-  <script src="script.js"></script>
+  <script src="/scripts/script.js"></script>
 
 </body>
 
