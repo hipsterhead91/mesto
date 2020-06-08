@@ -44,23 +44,23 @@
 
   <!--ПОПАП РЕДАКТИРОВАНИЯ ПРОФИЛЯ-->
   <div class="popup profile-popup">
-    <form class="popup__container" type="submit" name="edit-profile">
-      <button class="popup__close-button profile-close-button" type="button"></button>
+    <form class="popup__container" name="edit-profile">
+      <button type="button" class="popup__close-button profile-close-button"></button>
       <p class="popup__title">Редактировать профиль</p>
-      <input class="popup__input name-input" type="text" name="name-input">
-      <input class="popup__input job-input" type="text" name="job-input">
-      <button class="popup__submit-button profile-submit-button" type="submit">Сохранить</button>
+      <input type="text" class="popup__input name-input" name="name-input" minlength="2" maxlength="40" required>
+      <input type="text" class="popup__input job-input" name="job-input" minlength="2" maxlength="200" required>
+      <button type="submit" class="popup__submit-button profile-submit-button">Сохранить</button>
     </form>
   </div>
 
   <!--ПОПАП ДОБАВЛЕНИЯ КАРТОЧЕК-->
   <div class="popup new-card-popup">
-    <form class="popup__container" type="submit" name="new-card-popup">
-      <button class="popup__close-button new-card-close-button" type="button"></button>
+    <form class="popup__container" name="new-card-popup">
+      <button type="button" class="popup__close-button new-card-close-button"></button>
       <p class="popup__title">Новое место</p>
-      <input class="popup__input title-input" type="text" placeholder="Название" name="title-input">
-      <input class="popup__input link-input" type="text" placeholder="Ссылка на картинку" name="link-input">
-      <button class="popup__submit-button new-card-submit-button" type="submit">Сохранить</button>
+      <input type="text" class="popup__input title-input" placeholder="Название" name="title-input" minlength="1" maxlength="30" required>
+      <input type="url" class="popup__input link-input" placeholder="Ссылка на картинку" name="link-input" required>
+      <button type="submit" class="popup__submit-button new-card-submit-button">Сохранить</button>
     </form>
   </div>
 
@@ -69,7 +69,7 @@
   <div class="popup image-popup">
     <div class="popup__image-container">
       <button class="popup__close-button image-close-button" type="button"></button>
-      <img class="popup__image" alt="Пользовательское изображение.">
+      <img class="popup__image" src="" alt="Пользовательское изображение.">
       <p class="popup__image-title"></p>
     </div>
   </div>
@@ -86,7 +86,8 @@
     </div>  
   </template>
 
-  <script src="script.js"></script>
+  <script src="scripts/script.js"></script>
+  <script src="scripts/validate.js"></script>
 
 </body>
 
