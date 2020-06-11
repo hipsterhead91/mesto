@@ -1,5 +1,6 @@
 // РАБОТА С КАРТОЧКАМИ
 const newCardPopup = document.querySelector('.new-card-popup');
+const newCardForm = document.querySelector('.add-new-card');
 const addNewCardButton = document.querySelector('.profile__add-button');
 const newCardCloseButton = document.querySelector('.new-card-close-button');
 const newCardSubmitButton = document.querySelector('.new-card-submit-button');
@@ -26,6 +27,7 @@ const imagePopupTitle = document.querySelector('.popup__image-title');
 
 // РЕДАКТИРОВАНИЕ ПРОФИЛЯ
 const profilePopup = document.querySelector('.profile-popup');
+const profileForm = document.querySelector('.edit-profile');
 const editProfileButton = document.querySelector('.profile__edit-button');
 const profileCloseButton = document.querySelector('.profile-close-button');
 const profileSubmitButton = document.querySelector('.profile-submit-button');
@@ -33,6 +35,22 @@ const userName = document.querySelector('.profile__name');
 const userNameInput = document.querySelector('.name-input');
 const userJob = document.querySelector('.profile__job');
 const userJobInput = document.querySelector('.job-input');
+
+
+
+// ЗАКРЫВАЕМ ПОПАП ПО КЛИКУ НА ОВЕРЛЕЙ ИЛИ ПРИ НАЖАТИИ ESC
+function closeByOverlayClick(event) {
+  if (event.target.classList.contains('popup')) {
+    event.target.classList.remove('popup_opened');
+  }
+}
+
+function closeByEsc(event) {
+  if (event.keyCode == 27) {
+    const actualPopup = document.querySelector('.popup_opened');
+    actualPopup.classList.remove('popup_opened');
+  }
+}
 
 
 // ЛАЙКАЕМ КАРТОЧКУ, УДАЛЯЕМ, СМОТРИМ КАРТИНКУ В ПОЛНОМ РАЗМЕРЕ
@@ -48,10 +66,14 @@ function openImage(event) {
   imagePopup.classList.add('popup_opened');
   imagePopupPhoto.src = event.target.closest('.element__image').src;
   imagePopupTitle.textContent = event.target.closest('.element').querySelector('.element__title').textContent;
+  imagePopup.addEventListener('click', closeByOverlayClick);
+  document.addEventListener('keydown', closeByEsc);
 }
 
 function closeImage() {
   imagePopup.classList.remove('popup_opened');
+  imagePopup.removeEventListener('click', closeByOverlayClick);
+  document.removeEventListener('keydown', closeByEsc);
 }
 
 
@@ -73,12 +95,16 @@ function renderCard(card, container) {
 function editNewCard(event) {
   event.preventDefault();
   newCardPopup.classList.add('popup_opened');
+  newCardPopup.addEventListener('mousedown', closeByOverlayClick);
+  document.addEventListener('keydown', closeByEsc);
 }
 
 function closeNewCardForm() {
   newCardPopup.classList.remove('popup_opened');
   titleInput.value = '';
   linkInput.value = '';
+  newCardPopup.removeEventListener('mousedown', closeByOverlayClick);
+  document.removeEventListener('keydown', closeByEsc);
 }
 
 function addNewCard(event) {
@@ -96,10 +122,14 @@ function editProfile(event) {
   profilePopup.classList.add('popup_opened');
   userNameInput.value = userName.textContent;
   userJobInput.value = userJob.textContent;
+  profilePopup.addEventListener('mousedown', closeByOverlayClick);
+  document.addEventListener('keydown', closeByEsc);
 }
 
 function closeProfileForm() {
   profilePopup.classList.remove('popup_opened');
+  profilePopup.removeEventListener('mousedown', closeByOverlayClick);
+  document.removeEventListener('keydown', closeByEsc);
 }
 
 function submitProfile(event) {
@@ -122,8 +152,8 @@ imageCloseButton.addEventListener('click', closeImage);
 
 addNewCardButton.addEventListener('click', editNewCard);
 newCardCloseButton.addEventListener('click', closeNewCardForm);
-newCardSubmitButton.addEventListener('click', addNewCard);
+newCardForm.addEventListener('submit', addNewCard);
 
 editProfileButton.addEventListener('click', editProfile);
 profileCloseButton.addEventListener('click', closeProfileForm);
-profileSubmitButton.addEventListener('click', submitProfile);
+profileForm.addEventListener('submit', submitProfile);
