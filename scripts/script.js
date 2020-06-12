@@ -3,7 +3,6 @@ const newCardPopup = document.querySelector('.new-card-popup');
 const newCardForm = document.querySelector('.add-new-card');
 const addNewCardButton = document.querySelector('.profile__add-button');
 const newCardCloseButton = document.querySelector('.new-card-close-button');
-const newCardSubmitButton = document.querySelector('.new-card-submit-button');
 const titleInput = document.querySelector('.title-input');
 const linkInput = document.querySelector('.link-input');
 const cardsContainer = document.querySelector('.elements');
@@ -30,7 +29,6 @@ const profilePopup = document.querySelector('.profile-popup');
 const profileForm = document.querySelector('.edit-profile');
 const editProfileButton = document.querySelector('.profile__edit-button');
 const profileCloseButton = document.querySelector('.profile-close-button');
-const profileSubmitButton = document.querySelector('.profile-submit-button');
 const userName = document.querySelector('.profile__name');
 const userNameInput = document.querySelector('.name-input');
 const userJob = document.querySelector('.profile__job');
@@ -46,7 +44,7 @@ function closeByOverlayClick(event) {
 }
 
 function closeByEsc(event) {
-  if (event.keyCode == 27) {
+  if (event.keyCode === 27) {
     const actualPopup = document.querySelector('.popup_opened');
     actualPopup.classList.remove('popup_opened');
   }
