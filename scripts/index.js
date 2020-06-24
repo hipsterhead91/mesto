@@ -1,4 +1,6 @@
-// РАБОТА С КАРТОЧКАМИ
+// ПЕРЕМЕННЫЕ
+
+// работа с карточками
 const newCardPopup = document.querySelector('.new-card-popup');
 const newCardForm = document.querySelector('.add-new-card');
 const addNewCardButton = document.querySelector('.profile__add-button');
@@ -7,24 +9,15 @@ const titleInput = document.querySelector('.title-input');
 const linkInput = document.querySelector('.link-input');
 const cardsContainer = document.querySelector('.elements');
 const cardTemplate = document.querySelector('.card-template').content;
-const initialCards = [
-  {name: 'Архыз', link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'},
-  {name: 'Челябинская область', link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'},
-  {name: 'Иваново', link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'},
-  {name: 'Камчатка', link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'},
-  {name: 'Холмогорский район', link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'},
-  {name: 'Байкал', link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'}
-]
+import {initialCards} from './initialCards.js';
 
-
-// ОТКРЫТИЕ КАРТИНКИ В ПОЛНОМ РАЗМЕРЕ
+// просмотр картинок в полном размере
 const imagePopup = document.querySelector('.image-popup');
 const imageCloseButton = document.querySelector('.image-close-button');
 const imagePopupPhoto = document.querySelector('.popup__image');
 const imagePopupTitle = document.querySelector('.popup__image-title');
 
-
-// РЕДАКТИРОВАНИЕ ПРОФИЛЯ
+// настройка профиля (имя, статус)
 const profilePopup = document.querySelector('.profile-popup');
 const profileForm = document.querySelector('.edit-profile');
 const editProfileButton = document.querySelector('.profile__edit-button');
@@ -34,9 +27,27 @@ const userNameInput = document.querySelector('.name-input');
 const userJob = document.querySelector('.profile__job');
 const userJobInput = document.querySelector('.job-input');
 
+// валидация форм
+const validationOptions = {
+  formSelector: '.popup__container',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit-button',
+  inactiveButtonClass: 'popup__submit-button_disabled',
+  inputErrorClass: 'popup__input_invalid',
+  errorClass: 'popup__error_visible'
+};
+import {Card} from './Card.js';
+import {FormValidator} from './FormValidator.js';
+const profileFormValidator = new FormValidator(validationOptions, profileForm);
+const newCardFormValidator = new FormValidator(validationOptions, newCardForm);
 
 
-// ЗАКРЫВАЕМ ПОПАП ПО КЛИКУ НА ОВЕРЛЕЙ ИЛИ ПРИ НАЖАТИИ ESC
+
+
+
+// ФУНКЦИИ
+
+// альтернативное закрытие попапов
 function closeByOverlayClick(event) {
   if (event.target.classList.contains('popup')) {
     event.target.classList.remove('popup_opened');
@@ -50,16 +61,7 @@ function closeByEsc(event) {
   }
 }
 
-
-// ЛАЙКАЕМ КАРТОЧКУ, УДАЛЯЕМ, СМОТРИМ КАРТИНКУ В ПОЛНОМ РАЗМЕРЕ
-function like(event) {
-  event.target.classList.toggle('element__like-button_active');
-}
-
-function deleteCard(event) {
-  event.target.closest('.element').remove();
-}
-
+// просмотр картинок в полном размере
 function openImage(event) {
   imagePopup.classList.add('popup_opened');
   imagePopupPhoto.src = event.target.closest('.element__image').src;
@@ -74,19 +76,9 @@ function closeImage() {
   document.removeEventListener('keydown', closeByEsc);
 }
 
-
-// РЕНДЕРИМ КАРТОЧКИ, ДОБАВЛЯЕМ НОВЫЕ
-function getCard(item) {
-  const card = cardTemplate.cloneNode(true);
-  card.querySelector('.element__title').textContent = item.name;
-  card.querySelector('.element__image').src = item.link;
-  card.querySelector('.element__like-button').addEventListener('click', like);
-  card.querySelector('.element__delete-button').addEventListener('click', deleteCard);
-  card.querySelector('.element__image').addEventListener('click', openImage);
-  return card;
-}
-
+// работа с карточками
 function renderCard(card, container) {
+  card.querySelector('.element__image').addEventListener('click', openImage);
   container.prepend(card);
 }
 
@@ -107,14 +99,12 @@ function closeNewCardForm() {
 
 function addNewCard(event) {
   event.preventDefault();
-  const cardInfo = {name: `${titleInput.value}`, link: `${linkInput.value}`};
-  const newCard = getCard(cardInfo);
-  renderCard(newCard, cardsContainer);
+  const newCard = new Card(titleInput.value, linkInput.value, cardTemplate);
+  renderCard(newCard.getCard(), cardsContainer);
   closeNewCardForm();
 }
 
-
-// РЕДАКТИРУЕМ ПРОФИЛЬ
+// настройка профиля (имя, статус)
 function editProfile(event) {
   event.preventDefault();
   profilePopup.classList.add('popup_opened');
@@ -138,20 +128,26 @@ function submitProfile(event) {
 }
 
 
-// РЕНДЕРИМ КАРТОЧКИ "ИЗ КОРОБКИ"
+
+
+
+// ЗАПУСК КОДА
+
+// рендер карточек "из коробки"
 initialCards.forEach((item) => {
-  const initialCard = getCard(item);
-  renderCard(initialCard, cardsContainer);
+  const initialCard = new Card(item.name, item.link, cardTemplate);
+  renderCard(initialCard.getCard(), cardsContainer);
 });
 
+// включение валидации
+profileFormValidator.enableValidation();
+newCardFormValidator.enableValidation();
 
-// СЛУШАЕМ СОБЫТИЯ
+// установка слушателей
 imageCloseButton.addEventListener('click', closeImage);
-
 addNewCardButton.addEventListener('click', editNewCard);
 newCardCloseButton.addEventListener('click', closeNewCardForm);
 newCardForm.addEventListener('submit', addNewCard);
-
 editProfileButton.addEventListener('click', editProfile);
 profileCloseButton.addEventListener('click', closeProfileForm);
 profileForm.addEventListener('submit', submitProfile);

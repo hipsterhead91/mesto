@@ -6,8 +6,9 @@
 * адаптивная вёрстка через медиазапросы;
 * flexbox-вёрстка;
 * GRID-layout;
-* базовый JavaScript;
-Организационная структура проекта реализована согласно стандартам Nested БЭМ.
+* Nested БЭМ;
+* валидация форм посредством JavaScript;
+* JS-модули и ООП.
 
 Ознакомиться с сайтом можно по ссылке: [https://hipsterhead91.github.io/mesto/](https://hipsterhead91.github.io/mesto/)
 
