@@ -1,5 +1,5 @@
 import {openPopup} from './utils.js';
-
+import {imagePopup} from './constants.js';
 
 
 export class Card {
@@ -35,7 +35,6 @@ export class Card {
   }
 
   _openImage() {
-    const imagePopup = document.querySelector('.image-popup');
     imagePopup.querySelector('.popup__image-title').textContent = this._text;
     imagePopup.querySelector('.popup__image').src = this._image;
     openPopup(imagePopup);

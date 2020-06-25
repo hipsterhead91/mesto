@@ -18,14 +18,15 @@ function closePopup(popup) {
 
 function closeByOverlayClick(event) {
   if (event.target.classList.contains('popup')) {
-    event.target.classList.remove('popup_opened');
+    const actualPopup = document.querySelector('.popup_opened');
+    closePopup(actualPopup);
   }
 }
 
 function closeByEsc(event) {
   if (event.key === 'Escape') {
     const actualPopup = document.querySelector('.popup_opened');
-    actualPopup.classList.remove('popup_opened');
+    closePopup(actualPopup);
   }
 }
 
