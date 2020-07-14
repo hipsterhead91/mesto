@@ -1,12 +1,9 @@
-import {openPopup} from './utils.js';
-import {imagePopup} from './constants.js';
-
-
 export class Card {
-  constructor(text, image, templateSelector) {
+  constructor(text, image, templateSelector, handleCardClick) {
     this._text = text;
     this._image = image;
     this._templateSelector = templateSelector;
+    this._handleCardClick = handleCardClick;
   }
 
   _getTemplate() {
@@ -22,7 +19,7 @@ export class Card {
       this._removeCard(event);
     });
     this._card.querySelector('.element__image').addEventListener('click', () => {
-      this._openImage();
+      this._handleCardClick();
     });
   }
 
@@ -32,12 +29,6 @@ export class Card {
 
   _removeCard(event) {
     event.target.closest('.element').remove();
-  }
-
-  _openImage() {
-    imagePopup.querySelector('.popup__image-title').textContent = this._text;
-    imagePopup.querySelector('.popup__image').src = this._image;
-    openPopup(imagePopup);
   }
 
   getCard() {
