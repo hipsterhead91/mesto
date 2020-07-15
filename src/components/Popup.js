@@ -6,11 +6,11 @@ export class Popup {
   open() {
     this._popup.classList.add('popup_opened');
 
-    document.addEventListener('keydown', () => {
+    document.addEventListener('keydown', (event) => {
       this._handleEscClose(event);
     });
 
-    this._popup.addEventListener('click', () => {
+    this._popup.addEventListener('click', (event) => {
       this._overlayClickClose(event);
     });
   }
@@ -18,11 +18,11 @@ export class Popup {
   close() {
     this._popup.classList.remove('popup_opened');
 
-    document.removeEventListener('keydown', () => {
+    document.removeEventListener('keydown', (event) => {
       this._handleEscClose(event);
     });
 
-    this._popup.removeEventListener('click', () => {
+    this._popup.removeEventListener('click', (event) => {
       this._overlayClickClose(event);
     });
   }

@@ -9,7 +9,7 @@ import { editProfileButton, addNewCardButton, profileForm, newCardForm, cardTemp
 
 
 // ИНФОРМАЦИЯ О ПОЛЬЗОВАТЕЛЕ
-const userInfo = new UserInfo({ userNameSelector: '.profile__name',  userJobSelector: '.profile__job' });
+const userInfo = new UserInfo({ userNameSelector: '.profile__name', userJobSelector: '.profile__job' });
 
 
 // ПОПАП ПОЛНОРАЗМЕРНОЙ КАРТИНКИ
@@ -18,12 +18,12 @@ imagePopup.setEventListeners();
 
 
 // СЕКЦИЯ ДЛЯ РЕНДЕРА КАРТОЧЕК
-const cardsContainer = new Section({ 
-  items: initialCards, 
+const cardsContainer = new Section({
+  items: initialCards,
   renderer: (item) => {
     const card = new Card(
-      item.name, 
-      item.link, 
+      item.name,
+      item.link,
       cardTemplate,
       () => {
         imagePopup.open(item.name, item.link);
@@ -37,17 +37,23 @@ cardsContainer.renderAll();
 
 
 // ПОПАП РЕДАКТИРОВАНИЯ ПРОФИЛЯ
-const profilePopup = new PopupWithForm('#profile-popup', (data) => {
-  userInfo.setUserInfo({
-    name: data.name,
-    job: data.job
-  });
-});
-
-profilePopup.setEventListeners();
-
 const profileFormValidator = new FormValidator(validationOptions, profileForm);
 profileFormValidator.enableValidation();
+
+const profilePopup = new PopupWithForm(
+  '#profile-popup',
+  (data) => {
+    userInfo.setUserInfo({
+      name: data.name,
+      job: data.job
+    });
+  },
+  () => {
+    profileFormValidator.resetValidation()
+  }
+);
+
+profilePopup.setEventListeners();
 
 editProfileButton.addEventListener('click', () => {
   const actualUserInfo = userInfo.getUserInfo();
@@ -58,22 +64,28 @@ editProfileButton.addEventListener('click', () => {
 
 
 // ПОПАП ДОБАВЛЕНИЯ НОВЫХ КАРТОЧЕК
-const newCardPopup = new PopupWithForm('#new-card-popup', (formValuesObj) => {
-  const card = new Card(
-    formValuesObj.title, 
-    formValuesObj.link, 
-    cardTemplate,
-    () => {
-      imagePopup.open(formValuesObj.title, formValuesObj.link);
-    })
-  .getCard();
-  cardsContainer.addItem(card);
-});
-
-newCardPopup.setEventListeners();
-
 const newCardFormValidator = new FormValidator(validationOptions, newCardForm);
 newCardFormValidator.enableValidation();
+
+const newCardPopup = new PopupWithForm(
+  '#new-card-popup',
+  (formValuesObj) => {
+    const card = new Card(
+      formValuesObj.title,
+      formValuesObj.link,
+      cardTemplate,
+      () => {
+        imagePopup.open(formValuesObj.title, formValuesObj.link);
+      })
+      .getCard();
+    cardsContainer.addItem(card);
+  },
+  () => {
+    newCardFormValidator.resetValidation()
+  }
+);
+
+newCardPopup.setEventListeners();
 
 addNewCardButton.addEventListener('click', () => {
   newCardPopup.open();
