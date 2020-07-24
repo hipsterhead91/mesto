@@ -2,7 +2,9 @@
 @import url(./__image/element__image.css);
 @import url(./__horizontal-alignment/element__horizontal-alignment.css);
 @import url(./__title/element__title.css);
+@import url(./__vertical-alignment/element__vertical-alignment.css);
 @import url(./__like-button/element__like-button.css);
+@import url(./__like-counter/element__like-counter.css);
 
 .element {
   width: 282px;

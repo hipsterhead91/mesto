@@ -20,12 +20,15 @@
     <section class="profile">
       <div class="profile__info">
         <img class="profile__avatar" src="./images/avatar.jpg" alt="Пользовательский аватар.">
+        <div class="profile__avatar-overlay">
+          <button class="profile__edit-avatar" type="button"></button>
+        </div>
         <div class="profile__vertical-alignment">
           <div class="profile__horizontal-alignment">
-            <h1 class="profile__name">Жак-Ив Кусто</h1>
+            <h1 class="profile__name"></h1>
             <button class="profile__edit-button" type="button"></button>
           </div>
-          <p class="profile__job">Исследователь океана</p>
+          <p class="profile__job"></p>
         </div>
       </div>
       <button class="profile__add-button" type="button"></button>
@@ -41,44 +44,71 @@
     <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
   </footer>
 
+  <!--ПОПАП ОБНОВЛЕНИЯ АВАТАРА-->
+  <div class="popup" id="avatar-popup">
+    <form class="popup__container popup__container_medium" id="avatar-form" novalidate>
+      <button type="button" class="popup__close-button"></button>
+      <p class="popup__title">Обновить аватар</p>
+      <label class="popup__input-alignment">
+        <input id="avatar" name="avatar" class="popup__input" value="" required autocomplete="off" type="url"
+          placeholder="Ссылка на аватар">
+        <span id="avatar-error" class="popup__error"></span>
+      </label>
+      <button type="submit" class="popup__submit-button popup__submit-button_disabled" id="avatar-submit" disabled>Сохранить</button>
+    </form>
+  </div>
+
   <!--ПОПАП РЕДАКТИРОВАНИЯ ПРОФИЛЯ-->
   <div class="popup" id="profile-popup">
     <form class="popup__container" id="edit-profile-form" novalidate>
-      <button type="button" class="popup__close-button profile-close-button"></button>
+      <button type="button" class="popup__close-button"></button>
       <p class="popup__title">Редактировать профиль</p>
       <label class="popup__input-alignment">
-        <input id="name" name="name" class="popup__input" value="" required autocomplete="off" type="text" placeholder="Имя" minlength="2" maxlength="40">
+        <input id="name" name="name" class="popup__input" value="" required autocomplete="off" type="text"
+          placeholder="Имя" minlength="2" maxlength="40">
         <span id="name-error" class="popup__error"></span>
       </label>
       <label class="popup__input-alignment">
-        <input id="job" name="job" class="popup__input" value="" required autocomplete="off" type="text" placeholder="О себе" minlength="2" maxlength="200">
+        <input id="job" name="job" class="popup__input" value="" required autocomplete="off" type="text"
+          placeholder="О себе" minlength="2" maxlength="200">
         <span id="job-error" class="popup__error"></span>
       </label>
-      <button type="submit" class="popup__submit-button profile-submit-button">Сохранить</button>
+      <button type="submit" class="popup__submit-button" id="profile-submit">Сохранить</button>
     </form>
   </div>
 
   <!--ПОПАП ДОБАВЛЕНИЯ КАРТОЧЕК-->
   <div class="popup" id="new-card-popup">
     <form class="popup__container" id="add-new-card-form" novalidate>
-      <button type="button" class="popup__close-button new-card-close-button"></button>
+      <button type="button" class="popup__close-button"></button>
       <p class="popup__title">Новое место</p>
       <label class="popup__input-alignment">
-        <input id="title" name="title" class="popup__input" value="" required autocomplete="off" type="text" placeholder="Название" minlength="1" maxlength="30">
+        <input id="title" name="title" class="popup__input" value="" required autocomplete="off" type="text"
+          placeholder="Название" minlength="1" maxlength="30">
         <span id="title-error" class="popup__error"></span>
       </label>
       <label class="popup__input-alignment">
-        <input id="link" name="link" class="popup__input" value="" required autocomplete="off" type="url" placeholder="Ссылка на картинку">
+        <input id="link" name="link" class="popup__input" value="" required autocomplete="off" type="url"
+          placeholder="Ссылка на картинку">
         <span id="link-error" class="popup__error"></span>
       </label>
-      <button type="submit" class="popup__submit-button new-card-submit-button popup__submit-button_disabled" disabled>Сохранить</button>
+      <button type="submit" class="popup__submit-button popup__submit-button_disabled" id="new-card-submit" disabled>Сохранить</button>
+    </form>
+  </div>
+
+  <!--ПОПАП ПОДТВЕРЖДЕНИЯ УДАЛЕНИЯ КАРТОЧКИ-->
+  <div class="popup" id="confirmation-popup">
+    <form class="popup__container popup__container_small" id="confirm-form">
+      <button type="button" class="popup__close-button"></button>
+      <p class="popup__title">Вы уверены?</p>
+      <button type="submit" class="popup__submit-button">Да</button>
     </form>
   </div>
 
   <!--ПОПАП ОТКРЫТОЙ КАРТИНКИ-->
   <div class="popup" id="image-popup">
     <div class="popup__image-container">
-      <button class="popup__close-button image-close-button" type="button"></button>
+      <button class="popup__close-button" type="button"></button>
       <img class="popup__image" src="./images/avatar.jpg" alt="Пользовательское изображение.">
       <p class="popup__image-title"></p>
     </div>
@@ -91,9 +121,12 @@
       <img class="element__image" alt="Пользовательское изображение.">
       <div class="element__horizontal-alignment">
         <h2 class="element__title"></h2>
-        <button class="element__like-button" type="button"></button>
+        <div class="element__vertical-alignment">
+          <button class="element__like-button" type="button"></button>
+          <span class="element__like-counter">0</span>
+        </div>
       </div>
-    </div>  
+    </div>
   </template>
 
 </body>
