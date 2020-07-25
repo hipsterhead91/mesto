@@ -39,14 +39,14 @@ export class Card {
   }
 
   _getTemplate() {
-    this._template = this._templateSelector.cloneNode(true);
+    this._template = this._templateSelector.querySelector('.element').cloneNode(true);
     return this._template;
   }
 
   _setEventListeners() {
     if (this._ownerId == '3fd8f167d4be4f0b8a023473') {
       this._removeButton.addEventListener('click', () => {
-        this._removeCardFunction();
+        this._removeCardFunction(this._card);
       });
     }
     this._likeButton.addEventListener('click', () => {

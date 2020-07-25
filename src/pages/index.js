@@ -138,11 +138,14 @@ const cardsContainer = new Section({
       likeFunction: () => api.putLike(item._id),
       removeLikeFunction: () => api.deleteLike(item._id),
       imageOpening: () => imagePopup.open(item.name, item.link),
-      removeCardFunction: () => {
+      removeCardFunction: (actualCard) => {
         confirmationPopup = new PopupWithConfirmation({
           popupSelector: '#confirmation-popup',
           submitFunction: () => {
-            api.deleteCard(item._id);
+            api.deleteCard(item._id)
+            .then(() => {
+              actualCard.remove();
+            });
             confirmationPopup.close();
           }
         });
@@ -182,11 +185,14 @@ const newCardPopup = new PopupWithForm({
           likeFunction: () => api.putLike(result._id),
           removeLikeFunction: () => api.deleteLike(result._id),
           imageOpening: () => imagePopup.open(result.name, result.link),
-          removeCardFunction: () => {
+          removeCardFunction: (actualCard) => {
             confirmationPopup = new PopupWithConfirmation({
               popupSelector: '#confirmation-popup',
               submitFunction: () => {
-                api.deleteCard(result._id);
+                api.deleteCard(result._id)
+                .then(() => {
+                  actualCard.remove();
+                });
                 confirmationPopup.close();
               }
             });
