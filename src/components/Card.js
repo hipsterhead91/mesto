@@ -1,8 +1,9 @@
 export class Card {
 
-  constructor(options) {
+  constructor(userId, options) {
+    this._userId = userId; // id пользователя, который получен при запросе данных пользователя
     this._cardId = options.cardId;
-    this._ownerId = options.ownerId;
+    this._ownerId = options.ownerId; // id владельца конкретно этой карточки (не путать с id пользователя, ибо могут отличаться)
     this._name = options.name;
     this._link = options.link;
     this._templateSelector = options.templateSelector;
@@ -16,7 +17,7 @@ export class Card {
   getCard() {
     this._card = this._getTemplate();
     this._deleteButton = this._card.querySelector('.element__delete-button');
-    if (this._ownerId !== '3fd8f167d4be4f0b8a023473') {
+    if (this._ownerId !== this._userId) {
       this._deleteButton.remove();
     };
     this._likeButton = this._card.querySelector('.element__like-button');
@@ -24,7 +25,7 @@ export class Card {
     this._likesCounter.textContent = this._likes.length;
 
     this._likes.find((owner) => {
-      if (owner._id === '3fd8f167d4be4f0b8a023473') {
+      if (owner._id === this._userId) {
         this._likeButton.classList.add('element__like-button_active');
       }
     });
@@ -44,28 +45,17 @@ export class Card {
   }
 
   _setEventListeners() {
-    if (this._ownerId == '3fd8f167d4be4f0b8a023473') {
+    if (this._ownerId == this._userId) {
       this._removeButton.addEventListener('click', () => {
         this._removeCardFunction(this._card);
       });
     }
     this._likeButton.addEventListener('click', () => {
-      this._like();
+      this._likeFunction(this._likes, this._cardId, this._likeButton, this._likesCounter);
     });
     this._image.addEventListener('click', () => {
       this._imageOpening();
     });
-  }
-
-  _like() {
-    if (this._likeButton.classList.contains('element__like-button_active')) {
-      this._removeLikeFunction();
-      this._likesCounter.textContent = Number(this._likesCounter.textContent) - 1;
-    } else {
-      this._likeFunction();
-      this._likesCounter.textContent = Number(this._likesCounter.textContent) + 1;
-    }
-    this._likeButton.classList.toggle('element__like-button_active');
   }
 
 }

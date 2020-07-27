@@ -11,17 +11,6 @@ import { editAvatarButton, editProfileButton, addNewCardButton, cardTemplate, va
 
 
 
-// НАСТРОЙКА API
-const api = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-13',
-  headers: {
-    authorization: '41d7f09e-77c9-4cd2-9eb8-a7dd1866e16a',
-    'Content-Type': 'application/json'
-  }
-});
-
-
-
 // ВАЛИДАЦИЯ ФОРМ
 const avatarFormValidator = new FormValidator({
   validationOptions: validationOptions,
@@ -44,19 +33,23 @@ newCardFormValidator.enableValidation();
 
 
 
-// ЗАГРУЗКА ДАННЫХ ПОЛЬЗОВАТЕЛЯ С СЕРВЕРА
+// НАСТРОЙКА API
+const api = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-13',
+  headers: {
+    authorization: '41d7f09e-77c9-4cd2-9eb8-a7dd1866e16a',
+    'Content-Type': 'application/json'
+  }
+});
+
+
+
+// ОТРАЖЕНИЕ ИНФОРМАЦИИ О ПОЛЬЗОВАТЕЛЕ НА СТРАНИЦЕ
 const userInfo = new UserInfo({
   userNameSelector: '.profile__name',
   userJobSelector: '.profile__job',
   userAvatarSelector: '.profile__avatar'
 });
-
-api.getUserData()
-  .then(result => {
-    userInfo.setUserInfo(result.name, result.about);
-    userInfo.setUserAvatar(result.avatar);
-  })
-  .catch(error => console.error(error));
 
 
 
@@ -67,12 +60,12 @@ const avatarPopup = new PopupWithForm({
   submitFunction: data => {
     avatarPopup.savingInProgress(true, avatarSubmitButton);
     api.patchUserAvatar(data.avatar)
-      .then(result => userInfo.setUserAvatar(result.avatar))
-      .catch(error => console.error(error))
-      .finally(() => {
-        avatarPopup.savingInProgress(false, avatarSubmitButton);
+      .then(result => {
+        userInfo.setUserAvatar(result.avatar);
         avatarPopup.close();
       })
+      .catch(error => console.error(error))
+      .finally(() => avatarPopup.savingInProgress(false, avatarSubmitButton))
   }
 });
 avatarPopup.setEventListeners();
@@ -87,12 +80,12 @@ const profilePopup = new PopupWithForm({
   submitFunction: data => {
     profilePopup.savingInProgress(true, profileSubmitButton);
     api.patchUserInfo(data.name, data.job)
-      .then(result => userInfo.setUserInfo(result.name, result.about))
-      .catch(error => console.error(error))
-      .finally(() => {
-        profilePopup.savingInProgress(false, profileSubmitButton);
+      .then(result => {
+        userInfo.setUserInfo(result.name, result.about);
         profilePopup.close();
       })
+      .catch(error => console.error(error))
+      .finally(() => profilePopup.savingInProgress(false, profileSubmitButton))
   }
 });
 
@@ -123,94 +116,106 @@ let confirmationPopup = new PopupWithConfirmation({
 confirmationPopup.setEventListeners();
 
 
-// РЕНДЕР КАРТОЧЕК С СЕРВЕРА
-const cardsContainer = new Section({
-  containerSelector: '.elements',
-  items: [],
-  renderer: item => {
-    const card = new Card({
+
+// РАБОТА С ПРОМИСАМИ
+Promise.all([api.getUserData(), api.getInitialCards()])
+  .then(values => {
+
+    // КОНТЕЙНЕР ДЛЯ КАРТОЧЕК
+    const cardsContainer = new Section({
+      containerSelector: '.elements',
+      items: [],
+      renderer: item => {
+        const card = createCard(userData._id, item);
+        cardsContainer.addItem(card);
+      }
+    });
+
+    const [userData, initialCards] = values;
+    userInfo.setUserInfo(userData.name, userData.about);
+    userInfo.setUserAvatar(userData.avatar);
+    cardsContainer.setItems(initialCards);
+    cardsContainer.renderAll();
+
+    // ПОПАП ДОБАВЛЕНИЯ НОВЫХ КАРТОЧЕК
+    const newCardPopup = new PopupWithForm({
+      popupSelector: '#new-card-popup',
+      resetFunction: () => newCardFormValidator.resetValidation(),
+      submitFunction: data => {
+        newCardPopup.savingInProgress(true, newCardSubmitButton);
+        api.postNewCard(data.title, data.link)
+          .then(result => {
+            const card = createCard(userData._id, result);
+            cardsContainer.addItem(card);
+            newCardPopup.close();
+          })
+          .catch(error => console.error(error))
+          .finally(() => newCardPopup.savingInProgress(false, newCardSubmitButton))
+      }
+    });
+
+    newCardPopup.setEventListeners();
+    addNewCardButton.addEventListener('click', () => {
+      newCardPopup.open();
+    });
+  })
+  .catch(error => console.log(error))
+
+
+
+// СОЗДАНИЕ КАРТОЧКИ
+function createCard(userId, item) {
+  const card = new Card(
+    userId,
+    {
       cardId: item._id,
       ownerId: item.owner._id,
       name: item.name,
       link: item.link,
       templateSelector: cardTemplate,
       likes: item.likes,
-      likeFunction: () => api.putLike(item._id),
-      removeLikeFunction: () => api.deleteLike(item._id),
+      likeFunction: (likesArray, cardId, likeButton, likesCounter) => {
+        let hasLiked = likesArray.some(owner => owner._id === userId);
+        if (hasLiked) {
+          api.deleteLike(cardId)
+            .then((result) => {
+              likeButton.classList.remove('element__like-button_active');
+              likesCounter.textContent = result.likes.length;
+              let index = likesArray.findIndex(n => n._id === userId);
+              likesArray.splice(index, 1);
+            })
+            .catch(error => console.error(error))
+        } else {
+          api.putLike(cardId)
+            .then((result) => {
+              likeButton.classList.add('element__like-button_active');
+              likesCounter.textContent = result.likes.length;
+              api.getUserData()
+                .then(user => {
+                  likesArray.push(user);
+                })
+                .catch(error => console.error(error))
+            })
+            .catch(error => console.error(error))
+        }
+      },
       imageOpening: () => imagePopup.open(item.name, item.link),
       removeCardFunction: (actualCard) => {
         confirmationPopup = new PopupWithConfirmation({
           popupSelector: '#confirmation-popup',
           submitFunction: () => {
             api.deleteCard(item._id)
-            .then(() => {
-              actualCard.remove();
-            });
-            confirmationPopup.close();
+              .then(() => {
+                actualCard.remove();
+                confirmationPopup.close();
+              })
+              .catch(error => console.error(error))
           }
         });
         confirmationPopup.setEventListeners();
         confirmationPopup.open();
       }
     })
-      .getCard();
-    cardsContainer.addItem(card);
-  }
-});
-
-api.getInitialCards()
-  .then(result => {
-    cardsContainer.setItems(result);
-    cardsContainer.renderAll();
-  })
-  .catch(error => console.error(error));
-
-
-
-// ПОПАП ДОБАВЛЕНИЯ НОВЫХ КАРТОЧЕК
-const newCardPopup = new PopupWithForm({
-  popupSelector: '#new-card-popup',
-  resetFunction: () => newCardFormValidator.resetValidation(),
-  submitFunction: data => {
-    newCardPopup.savingInProgress(true, newCardSubmitButton);
-    api.postNewCard(data.title, data.link)
-      .then(result => {
-        const card = new Card({
-          cardId: result._id,
-          ownerId: result.owner._id,
-          name: result.name,
-          link: result.link,
-          templateSelector: cardTemplate,
-          likes: result.likes,
-          likeFunction: () => api.putLike(result._id),
-          removeLikeFunction: () => api.deleteLike(result._id),
-          imageOpening: () => imagePopup.open(result.name, result.link),
-          removeCardFunction: (actualCard) => {
-            confirmationPopup = new PopupWithConfirmation({
-              popupSelector: '#confirmation-popup',
-              submitFunction: () => {
-                api.deleteCard(result._id)
-                .then(() => {
-                  actualCard.remove();
-                });
-                confirmationPopup.close();
-              }
-            });
-            confirmationPopup.setEventListeners();
-            confirmationPopup.open();
-          }
-        }).getCard();
-        cardsContainer.addItem(card);
-      })
-      .catch(error => console.error(error))
-      .finally(() => {
-        newCardPopup.savingInProgress(false, newCardSubmitButton);
-        newCardPopup.close();
-      })
-  }
-});
-
-newCardPopup.setEventListeners();
-addNewCardButton.addEventListener('click', () => {
-  newCardPopup.open();
-});
+    .getCard();
+  return card;
+}
