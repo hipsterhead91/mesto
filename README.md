@@ -21,6 +21,7 @@
 * резиновая вёрстка (минимальное разрешение - 320px).
 
 **Посмотреть на GitHub Pages:** https://hipsterhead91.github.io/mesto/
+
 **Этот же проект, но на React'е:** https://github.com/hipsterhead91/mesto-react
 
 Проект выполнил Гилемзянов Тимур.
